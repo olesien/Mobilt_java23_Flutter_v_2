@@ -11,10 +11,10 @@ class _LoginPage extends State<Login> {
       appBar: AppBar(
         title: Text("Login Page "),
       ),
-      body: Column(
-        children: <Widget>[
+      body: Padding(padding: const EdgeInsets.all(8.0), child: Column(
 
-          Text(
+        children: <Widget>[
+          const Text(
             'Login Information',
             style: TextStyle(fontSize: 20),
           ),
@@ -28,7 +28,7 @@ class _LoginPage extends State<Login> {
               decoration: InputDecoration(labelText: "Password")),
           MaterialButton(child: Text("LOGIN"), onPressed: () {}),
         ],
-      ),
+      )),
     );
   }
 }
