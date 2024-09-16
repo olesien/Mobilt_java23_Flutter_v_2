@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1058342963664",
+    "project_id": "auth-81878",
+    "storage_bucket": "auth-81878.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058342963664:android:803286f7a7d61a810311d5",
+        "android_client_info": {
+          "package_name": "edu.linus"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_YCvVinMIUuEx7xYyj1OhkRj9T5kNzHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058342963664:android:ef871d829ec74eb80311d5",
+        "android_client_info": {
+          "package_name": "edu.linus.auth"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_YCvVinMIUuEx7xYyj1OhkRj9T5kNzHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
