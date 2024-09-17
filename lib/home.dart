@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
@@ -15,6 +16,9 @@ class _HomeState extends State<Home> {
       Navigator.of(context).pushNamed('login');
     });
   }
+  _logout() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,12 @@ class _HomeState extends State<Home> {
       ),
       body: Center(
         child: Text('Home Page'),
+
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _logout,
+        tooltip: 'Logout',
+        child: const Icon(Icons.logout),
       ),
     );
   }
