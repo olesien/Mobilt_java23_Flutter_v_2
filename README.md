@@ -1,16 +1,41 @@
-# auth
+# Auth Gallery - Firebase & Flutter Application
 
-An auth project with firebase
+An auth project with firebase and flutter
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+For a live demo, please see here: [https://auth-81878.web.app/](https://auth-81878.web.app/)
 
-A few resources to get you started if this is your first Flutter project:
+This is a project made for the course mobile develoment at Grit Academy.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+It provides a login/register flow powered by Firebase Authentication (Email/Password).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Once logged in, a user can choose to upload an image with a caption, and when uploaded they may choose to add to their own personal gallery, which can be seen on a seperate page (navigated to from the navbar). Here they can see all images they have uploaded and delete images.
+
+![image](https://github.com/user-attachments/assets/d5e69b16-e29d-4a99-8ec4-9e780fb70bd4)
+![image](https://github.com/user-attachments/assets/58bec574-31f3-4c89-87ca-961368f8bb5c)
+![image](https://github.com/user-attachments/assets/2b1500d9-8240-46b5-8120-c84d0b17a283)
+
+## Tech
+
+It uses the following technologies
+
+- Flutter
+- Material Design
+- Firebase (auth, firestore, storage)
+- flutter_toast (for user feedback throughout the application)
+- cached_network_image (for displaying images)
+- flutter_launcher_icons (for the start icon)
+
+## Pages
+- Login
+- Register
+- Home (image upload)
+- Gallery
+
+## Compataiblity
+
+It is made for the following use-cases
+
+- Android
+- Web
