@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:auth/gallery.dart';
 import 'package:auth/home.dart';
 import 'package:auth/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -53,9 +54,9 @@ class _MyAppState extends State<MyApp> {
         firebaseUser = user;
         if (user == null) {
           loggedIn = false;
-          print('User is currently signed out!');
+          log('User is currently signed out!');
         } else {
-          print('User is signed in!');
+          log('User is signed in!');
           loggedIn = true;
         }
       });
@@ -77,8 +78,10 @@ class _MyAppState extends State<MyApp> {
       routes: <String, WidgetBuilder> {
         '/login': (BuildContext context) => AuthGuard(loggedIn: !loggedIn, child: Login(), url: "/"),
         '/register': (BuildContext context) => AuthGuard(loggedIn: !loggedIn, child: Register(), url: "/"),
-        '/account': (BuildContext context) => AuthGuard(loggedIn: loggedIn, child: Home(), url: "/login"),
+        '/gallery': (BuildContext context) => AuthGuard(loggedIn: loggedIn, child: Gallery(), url: "/login"),
       },
+      onUnknownRoute: null, //We don't care
+
     );
   }
 }
