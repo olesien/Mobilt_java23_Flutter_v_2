@@ -1,8 +1,8 @@
-import 'dart:async';
+
 import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,8 +29,6 @@ class _HomeState extends State<Home> {
     FilePickerResult? result = await FilePicker.platform.pickFiles(withData: true, type: FileType.custom, allowedExtensions: ['svg', 'png', 'gif', 'jpg', 'jpeg', 'tiff', 'webp']);
 
     if (result != null) {
-      File file = File(result.files.single.path!);
-
       Uint8List? fileBytes = result.files.first.bytes;
       String fileName = result.files.first.name;
 
@@ -205,17 +203,17 @@ switch (i) {
                       ),
                       Text("It's living on the web."),
                     ])),
-                Image.network(
-                  imageURL!,
-                  fit: BoxFit.fill,
-                  loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
+                CachedNetworkImage(
+                  imageUrl: imageURL!,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) {
+                    log(error.toString());
+                    return const Icon(
+                      Icons.error,
+                      color: Colors.red,
                     );
                   },
                 ),
