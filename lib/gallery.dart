@@ -56,6 +56,15 @@ class _GalleryState extends State<Gallery> {
 
   _logout() async {
     await FirebaseAuth.instance.signOut();
+    Fluttertoast.showToast(
+        msg: "Successfully logged out!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.orange,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
   }
 
   _onItemTapped(int i) {
@@ -77,6 +86,7 @@ class _GalleryState extends State<Gallery> {
       return const Scaffold(); //Empty
     }
       Query query = FirebaseFirestore.instance.collection("gallery").where('userId', isEqualTo: user.uid);
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return  Scaffold(
       appBar: AppBar(
@@ -86,7 +96,7 @@ class _GalleryState extends State<Gallery> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
+          child: FractionallySizedBox(widthFactor: screenWidth < 1000 ? 1.0 : 1000 / screenWidth, child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const Text(
@@ -181,7 +191,7 @@ class _GalleryState extends State<Gallery> {
                 ),
               ),
             ],
-          ),
+          )),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

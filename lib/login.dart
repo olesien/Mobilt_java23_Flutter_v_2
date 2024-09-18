@@ -8,14 +8,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginPage extends State<Login> {
+  bool isLoading = false;
   String email = "";
   String password = "";
 
   login() async {
+    setState(() {
+      isLoading = true;
+    });
     log(email);
     log(password);
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password
       );
@@ -28,8 +32,13 @@ class _LoginPage extends State<Login> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-
+      setState(() {
+        isLoading = false;
+      });
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       if (e.code == 'user-not-found') {
         log('No user found for that email.');
         Fluttertoast.showToast(
@@ -69,11 +78,12 @@ class _LoginPage extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("Login Page "),
       ),
-      body: Padding(padding: const EdgeInsets.all(16.0), child: Column(
+      body: Padding(padding: const EdgeInsets.all(16.0), child: Center(child: FractionallySizedBox(widthFactor: screenWidth < 750 ? 1.0 : 750 / screenWidth, child: Column(
 
         children: <Widget>[
           const Text(
@@ -91,7 +101,7 @@ class _LoginPage extends State<Login> {
               obscureText: true,
               decoration: InputDecoration(labelText: "Password"),
               onChanged: (text) {password = text.toString();}),
-          Padding(padding: const EdgeInsets.all(20), child: FilledButton( onPressed: login, child: Text("LOGIN" ) )),
+          Padding(padding: const EdgeInsets.all(20), child: FilledButton( onPressed: isLoading ? null : login, child: Text(isLoading ? "LOGGING IN..." : "LOGIN" ) )),
           InkWell(
             onTap: () {
               Navigator.pushNamed(context, "/register");
@@ -104,6 +114,6 @@ class _LoginPage extends State<Login> {
           )
         ],
       )),
-    );
+    )));
   }
 }

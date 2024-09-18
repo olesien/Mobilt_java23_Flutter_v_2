@@ -8,12 +8,15 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterPage extends State<Register> {
+  bool isLoading = false;
   String email = "";
   String password = "";
 
   register() async {
-    log(email);
-    log(password);
+    setState(() {
+      isLoading = true;
+    });
+
     try {
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,
@@ -28,8 +31,13 @@ class _RegisterPage extends State<Register> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-
+      setState(() {
+        isLoading = false;
+      });
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       Fluttertoast.showToast(
           msg: e.message ?? "Something went wrong",
           toastLength: Toast.LENGTH_SHORT,
@@ -45,11 +53,12 @@ class _RegisterPage extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: Text("Register Page "),
       ),
-      body: Padding(padding: const EdgeInsets.all(16.0), child: Column(
+      body: Padding(padding: const EdgeInsets.all(16.0), child: Center(child: FractionallySizedBox(widthFactor: screenWidth < 750 ? 1.0 : 750 / screenWidth, child: Column(
 
         children: <Widget>[
           const Text(
@@ -67,7 +76,7 @@ class _RegisterPage extends State<Register> {
               obscureText: true,
               decoration: InputDecoration(labelText: "Password"),
               onChanged: (text) {password = text.toString();}),
-          Padding(padding: const EdgeInsets.all(20), child: FilledButton( onPressed: register, child: Text("Register" ) )),
+          Padding(padding: const EdgeInsets.all(20), child: FilledButton( onPressed: isLoading ? null : register, child: Text(isLoading ? "Registering..." : "Register" ) )),
           InkWell(
             onTap: () {
               Navigator.pushNamed(context, "/login");
@@ -80,6 +89,6 @@ class _RegisterPage extends State<Register> {
           )
         ],
       )),
-    );
+    )));
   }
 }

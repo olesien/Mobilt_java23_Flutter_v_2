@@ -20,6 +20,7 @@ class _HomeState extends State<Home> {
   String? imageURL;
   String? imageUrlRef;
   bool isLoading = false;
+  bool isSaving = false;
   String caption = "";
   void _onImagePressed() async {
     setState(() {
@@ -98,6 +99,9 @@ class _HomeState extends State<Home> {
         });
 
       } else {
+        setState(() {
+          isLoading = false;
+        });
         log("NULL");
       }
     } else {
@@ -108,8 +112,12 @@ class _HomeState extends State<Home> {
   }
 
   _saveImage() {
+
     var user = FirebaseAuth.instance.currentUser;
     if (user != null) {
+      setState(() {
+        isSaving = true;
+      });
       var img = {
         "userId": user.uid,
         "imgUrlRef": imageUrlRef,
@@ -132,6 +140,7 @@ class _HomeState extends State<Home> {
           imageURL = null;
           caption = "";
           imageUrlRef = null;
+          isSaving = false;
         });
       });
     }
@@ -139,6 +148,15 @@ class _HomeState extends State<Home> {
   }
   _logout() async {
     await FirebaseAuth.instance.signOut();
+    Fluttertoast.showToast(
+        msg: "Successfully logged out!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.orange,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
   }
 
   _onItemTapped(int i) {
@@ -160,29 +178,31 @@ switch (i) {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return  Scaffold(
       appBar: AppBar(
         title: Text("Home "),
         //actions: <Widget>[LogoutButton()],
       ),
       body: Center(
-        child: Padding(padding: const EdgeInsets.all(16.0), child: ListView(
+
+        child: FractionallySizedBox(widthFactor: screenWidth < 1000 ? 1.0 : 1000 / screenWidth, child: Padding(padding: const EdgeInsets.all(16.0), child: ListView(
           padding: const EdgeInsets.all(8),
           children: <Widget>[
             const Text(
               'Home Page',
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             TextField(
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(labelText: "Caption"),
-                onChanged: (text) {caption = text.toString();}),
+                decoration: const InputDecoration(labelText: "Caption"),
+                onChanged: isLoading ? null : (text) {caption = text.toString();}),
             Padding(
               padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
               child: ElevatedButton(
-                onPressed: _onImagePressed,
-                child: const Text("Upload image"),
+                onPressed: isLoading ? null : _onImagePressed,
+                child: Text(isLoading ? "Uploading image.." : "Upload image"),
               ),
             ),
             Column(
@@ -201,7 +221,6 @@ switch (i) {
                           color: Colors.black54,
                         ),
                       ),
-                      Text("It's living on the web."),
                     ])),
                 CachedNetworkImage(
                   imageUrl: imageURL!,
@@ -217,7 +236,7 @@ switch (i) {
                     );
                   },
                 ),
-                FilledButton(onPressed: _saveImage, child: Text("Save To Gallery"))
+                Padding(padding: const EdgeInsets.only(top: 8.0), child: FilledButton(onPressed: isSaving ? null : _saveImage, child: Text(isSaving ? "Saving To Gallery..." : "Save To Gallery")))
               ]
                   :
               // No image URL is defined
@@ -227,7 +246,7 @@ switch (i) {
               )] : [const Text("No image has been uploaded.")],
             )
           ],
-        )),
+        ))),
 
       ),
       bottomNavigationBar: BottomNavigationBar(
