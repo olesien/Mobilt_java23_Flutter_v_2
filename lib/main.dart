@@ -74,11 +74,11 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: AuthGuard(loggedIn: loggedIn, child: Home(), url: "/login"), // becomes the route named '/'
+      home: AuthGuard(loggedIn: loggedIn, url: "/login", child: Home()), // becomes the route named '/'
       routes: <String, WidgetBuilder> {
-        '/login': (BuildContext context) => AuthGuard(loggedIn: !loggedIn, child: Login(), url: "/"),
-        '/register': (BuildContext context) => AuthGuard(loggedIn: !loggedIn, child: Register(), url: "/"),
-        '/gallery': (BuildContext context) => AuthGuard(loggedIn: loggedIn, child: Gallery(), url: "/login"),
+        '/login': (BuildContext context) => AuthGuard(loggedIn: !loggedIn, url: "/", child: Login()),
+        '/register': (BuildContext context) => AuthGuard(loggedIn: !loggedIn, url: "/", child: Register()),
+        '/gallery': (BuildContext context) => AuthGuard(loggedIn: loggedIn, url: "/login", child: Gallery()),
       },
       onUnknownRoute: null, //We don't care
 
